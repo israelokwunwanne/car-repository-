@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FAST CARS</title></head>
+<body>
+  <header>
+    <a href="{% url 'home' %}">FAST CARS</a>
+    <nav aria-label="Main navigation">
+      <a href="{% url 'vehicles:list' %}">Vehicles</a>
+      <a href="{% url 'contact:contact' %}">Contact</a>
+      <a href="{% url 'testimonials:list' %}">Testimonials</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'bookings:my_bookings' %}">My bookings</a>
+      {% else %}
+        <a href="{% url 'accounts:login' %}">Log in</a>
+      {% endif %}
+    </nav>
+  </header>
+  {% for message in messages %}
+    <p class="{{ message.tags }}">{{ message }}</p>
+  {% endfor %}
+  {% block content %}{% endblock %}
+  <footer>
+    <form method="post" action="{% url 'contact:subscribe' %}">
+      {% csrf_token %}
+      <label for="subscriber-email">Email updates</label>
+      <input id="subscriber-email" type="email" name="email" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+  <main>
+    <h1>Vehicle catalogue</h1>
+    <form method="get">
+      {{ filters.as_p }}
+      <button type="submit">Apply filters</button>
+      <a href="{% url 'vehicles:list' %}">Clear</a>
+    </form>
+    <p>{{ vehicles.paginator.count }} vehicles found</p>
+    <section>
+      {% for vehicle in vehicles %}
+        <article>
+          {% if vehicle.image %}<img src="{{ vehicle.image }}" alt="{{ vehicle }}" width="320">{% endif %}
+          <h2><a href="{% url 'vehicles:detail' vehicle.pk %}">{{ vehicle }}</a></h2>
+          <p>{{ vehicle.seats }} seats | {{ vehicle.fuel_type }}</p>
+          <p>{{ vehicle.price_per_day }} per day · {% if vehicle.is_available %}Available{% else %}Unavailable{% endif %}</p>
+        </article>
+      {% empty %}
+        <p>No vehicles match those filters.</p>
+      {% endfor %}
+    </section>
+    {% if vehicles.has_other_pages %}
+      <nav aria-label="Catalogue pages">
+        {% if vehicles.has_previous %}<a href="?page={{ vehicles.previous_page_number }}&amp;brand={{ request.GET.brand }}&amp;min_price={{ request.GET.min_price }}&amp;max_price={{ request.GET.max_price }}&amp;seats={{ request.GET.seats }}&amp;available={{ request.GET.available }}">Previous</a>{% endif %}
+        <span>Page {{ vehicles.number }} of {{ vehicles.paginator.num_pages }}</span>
+        {% if vehicles.has_next %}<a href="?page={{ vehicles.next_page_number }}&amp;brand={{ request.GET.brand }}&amp;min_price={{ request.GET.min_price }}&amp;max_price={{ request.GET.max_price }}&amp;seats={{ request.GET.seats }}&amp;available={{ request.GET.available }}">Next</a>{% endif %}
+      </nav>
+    {% endif %}
+  </main>
+{% endblock %}

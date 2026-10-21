@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <main>
+    <p><a href="{% url 'vehicles:list' %}">Back to vehicles</a></p>
+    {% if vehicle.image %}<img src="{{ vehicle.image }}" alt="{{ vehicle }}" width="640">{% endif %}
+    <h1>{{ vehicle }}</h1>
+    <p>{{ vehicle.price_per_day }} per day</p>
+    <dl>
+      <dt>Seats</dt><dd>{{ vehicle.seats }}</dd>
+      <dt>Fuel</dt><dd>{{ vehicle.fuel_type }}</dd>
+      <dt>Availability</dt><dd>{% if vehicle.is_available %}Available{% else %}Unavailable{% endif %}</dd>
+    </dl>
+    {% if vehicle.description %}<p>{{ vehicle.description|linebreaks }}</p>{% endif %}
+    {% if vehicle.is_available %}<a href="{% url 'bookings:create' %}?vehicle={{ vehicle.pk }}">Book this vehicle</a>{% endif %}
+  </main>
+{% endblock %}

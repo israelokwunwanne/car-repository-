@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+	<main>
+		<h1>{% if site_content %}{{ site_content.home_heading }}{% else %}Find your next drive{% endif %}</h1>
+		{% if site_content and site_content.home_intro %}<p>{{ site_content.home_intro }}</p>{% endif %}
+		<p><a href="{% url 'vehicles:list' %}">Browse all vehicles</a></p>
+		<section aria-labelledby="featured-heading">
+			<h2 id="featured-heading">Featured vehicles</h2>
+			{% for vehicle in featured_vehicles %}
+				<article>
+					{% if vehicle.image %}<img src="{{ vehicle.image }}" alt="{{ vehicle }}" width="320">{% endif %}
+					<h3><a href="{% url 'vehicles:detail' vehicle.pk %}">{{ vehicle }}</a></h3>
+					  <p>{{ vehicle.seats }} seats | {{ vehicle.fuel_type }} | {{ vehicle.price_per_day }} per day</p>
+				</article>
+			{% empty %}
+				<p>No featured vehicles are available right now.</p>
+			{% endfor %}
+		</section>
+	</main>
+{% endblock %}

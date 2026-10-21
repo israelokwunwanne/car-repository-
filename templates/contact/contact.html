@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+  <main>
+    <h1>Contact us</h1>
+    {% if site_content %}
+      <address>
+        {% if site_content.contact_email %}<p>Email: <a href="mailto:{{ site_content.contact_email }}">{{ site_content.contact_email }}</a></p>{% endif %}
+        {% if site_content.contact_phone %}<p>Phone: <a href="tel:{{ site_content.contact_phone }}">{{ site_content.contact_phone }}</a></p>{% endif %}
+        {% if site_content.contact_address %}<p>{{ site_content.contact_address }}</p>{% endif %}
+      </address>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Send message</button>
+    </form>
+  </main>
+{% endblock %}
